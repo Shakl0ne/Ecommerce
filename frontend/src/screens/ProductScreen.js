@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Row, Col, Image, ListGroup, Button, Card, Form } from 'react-bootstrap'
+import React, {useState, useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {Link, useParams, useNavigate} from 'react-router-dom'
+import {Row, Col, Image, ListGroup, Button, Card, Form} from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { listProductDetails, createProductReview } from '../actions/productActions'
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import {listProductDetails, createProductReview} from '../actions/productActions'
+import {PRODUCT_CREATE_REVIEW_RESET} from '../constants/productConstants'
 
-function ProductScreen({ match, history }) {
+function ProductScreen() {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
-
+    const productId = useParams()
+    let navigate = useNavigate()
     const dispatch = useDispatch()
 
     const productDetails = useSelector(state => state.productDetails)
-    const { loading, error, product } = productDetails
-
+    const {loading, error, product} = productDetails
 
     const productReviewCreate = useSelector(state => state.productReviewCreate)
     const {
@@ -32,37 +32,37 @@ function ProductScreen({ match, history }) {
             setComment('')
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
         }
+        dispatch(listProductDetails(productId.id))
 
-        dispatch(listProductDetails(match.params.id))
-
-    }, [dispatch, match, successProductReview])
+    }, [dispatch, productId.id, successProductReview])
 
     const addToCartHandler = () => {
-        history.push(`/cart/${match.params.id}?qty=${qty}`)
+        //Now we set the navigate hook:
+        navigate(`/cart/${productId.id}?qty=${qty}`);
     }
+
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(createProductReview(
-            match.params.id, {
+            productId.id, {
                 rating,
                 comment
             }
         ))
     }
-
     return (
         <div>
             <Link to='/' className='btn btn-light my-3'>Go Back</Link>
             {loading ?
-                <Loader />
+                <Loader/>
                 : error
                     ? <Message variant='danger'>{error}</Message>
                     : (
                         <div>
                             <Row>
                                 <Col md={6}>
-                                    <Image src={product.image} alt={product.name} fluid />
+                                    <Image src={product.image} alt={product.name} fluid/>
                                 </Col>
 
 
@@ -73,7 +73,8 @@ function ProductScreen({ match, history }) {
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
-                                            <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
+                                            <Rating value={product.rating} text={`${product.numReviews} reviews`}
+                                                    color={'#f8e825'}/>
                                         </ListGroup.Item>
 
                                         <ListGroup.Item>
@@ -156,7 +157,7 @@ function ProductScreen({ match, history }) {
                                         {product.reviews.map((review) => (
                                             <ListGroup.Item key={review._id}>
                                                 <strong>{review.name}</strong>
-                                                <Rating value={review.rating} color='#f8e825' />
+                                                <Rating value={review.rating} color='#f8e825'/>
                                                 <p>{review.createdAt.substring(0, 10)}</p>
                                                 <p>{review.comment}</p>
                                             </ListGroup.Item>
@@ -219,7 +220,7 @@ function ProductScreen({ match, history }) {
             }
 
 
-        </div >
+        </div>
     )
 }
 
