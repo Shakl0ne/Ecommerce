@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Link, useParams, useNavigate} from 'react-router-dom'
+import {Link, useParams, useNavigate, createSearchParams} from 'react-router-dom'
 import {Row, Col, Image, ListGroup, Button, Card, Form} from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
@@ -13,7 +13,7 @@ function ProductScreen() {
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
     const productId = useParams()
-    let navigate = useNavigate()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const productDetails = useSelector(state => state.productDetails)
@@ -34,11 +34,13 @@ function ProductScreen() {
         }
         dispatch(listProductDetails(productId.id))
 
-    }, [dispatch, productId.id, successProductReview])
+    }, [dispatch, productId, successProductReview])
 
     const addToCartHandler = () => {
-        //Now we set the navigate hook:
-        navigate(`/cart/${productId.id}?qty=${qty}`);
+        navigate({
+            pathname: `/cart/${productId.id}`,
+            search: `?${createSearchParams({qty:qty})}`
+        });
     }
 
 

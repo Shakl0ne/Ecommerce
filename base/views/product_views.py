@@ -96,7 +96,7 @@ def updateProduct(request, pk):
 def deleteProduct(request, pk):
     product = Product.objects.get(_id=pk)
     product.delete()
-    return Response('Producted Deleted')
+    return Response('Product Deleted')
 
 
 @api_view(['POST'])
