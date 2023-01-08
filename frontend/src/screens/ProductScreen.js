@@ -12,9 +12,13 @@ function ProductScreen() {
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+
     const productId = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     const productDetails = useSelector(state => state.productDetails)
     const {loading, error, product} = productDetails
@@ -139,7 +143,7 @@ function ProductScreen() {
                                             <ListGroup.Item>
                                                 <Button
                                                     onClick={addToCartHandler}
-                                                    className='btn-block'
+                                                    className='btn-block w-100 bg-black'
                                                     disabled={product.countInStock === 0}
                                                     type='button'>
                                                     Add to Cart
@@ -165,7 +169,7 @@ function ProductScreen() {
                                             </ListGroup.Item>
                                         ))}
 
-                                        {/*<ListGroup.Item>
+                                        <ListGroup.Item>
                                             <h4>Write a review</h4>
 
                                             {loadingProductReview && <Loader />}
@@ -176,8 +180,7 @@ function ProductScreen() {
                                                 <Form onSubmit={submitHandler}>
                                                     <Form.Group controlId='rating'>
                                                         <Form.Label>Rating</Form.Label>
-                                                        <Form.Control
-                                                            as='select'
+                                                        <Form.Select
                                                             value={rating}
                                                             onChange={(e) => setRating(e.target.value)}
                                                         >
@@ -187,7 +190,7 @@ function ProductScreen() {
                                                             <option value='3'>3 - Good</option>
                                                             <option value='4'>4 - Very Good</option>
                                                             <option value='5'>5 - Excellent</option>
-                                                        </Form.Control>
+                                                        </Form.Select>
                                                     </Form.Group>
 
                                                     <Form.Group controlId='comment'>
@@ -212,7 +215,7 @@ function ProductScreen() {
                                             ) : (
                                                 <Message variant='info'>Please <Link to='/login'>login</Link> to write a review</Message>
                                             )}
-                                        </ListGroup.Item>*/}
+                                        </ListGroup.Item>
                                     </ListGroup>
                                 </Col>
                             </Row>

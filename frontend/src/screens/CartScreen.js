@@ -100,8 +100,7 @@ function CartScreen() {
                     <ListGroup>
                         <Button
                             type='button'
-                            variant={'dark'}
-                            size='lg'
+                            className='btn-block bg-black'
                             disabled={cartItems.length === 0}
                             onClick={checkoutHandler}
                         >

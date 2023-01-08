@@ -13,7 +13,7 @@ import {
 
 import { cartReducer } from './reducers/cartReducers'
 
-/*import {
+import {
     userLoginReducer,
     userRegisterReducer,
     userDetailsReducer,
@@ -22,7 +22,6 @@ import { cartReducer } from './reducers/cartReducers'
     userDeleteReducer,
     userUpdateReducer,
 } from './reducers/userReducers'
-
 import {
     orderCreateReducer,
     orderDetailsReducer,
@@ -30,7 +29,7 @@ import {
     orderListMyReducer,
     orderListReducer,
     orderDeliverReducer,
-} from './reducers/orderReducers'*/
+} from './reducers/orderReducers'
 
 const reducer = combineReducers({
     productList: productListReducer,
@@ -43,11 +42,29 @@ const reducer = combineReducers({
 
     cart: cartReducer,
 
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
+    userDetails: userDetailsReducer,
+    userUpdateProfile: userUpdateProfileReducer,
+    userList: userListReducer,
+    userDelete: userDeleteReducer,
+    userUpdate: userUpdateReducer,
+
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    orderListMy: orderListMyReducer,
+    orderList: orderListReducer,
+    orderDeliver: orderDeliverReducer,
 })
 
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ?
     JSON.parse(localStorage.getItem('cartItems')) : []
+
+const userInfoFromStorage = localStorage.getItem('userInfo') ?
+    JSON.parse(localStorage.getItem('userInfo')) : null
+
 
 const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ?
     JSON.parse(localStorage.getItem('shippingAddress')) : {}
@@ -57,6 +74,7 @@ const initialState = {
         cartItems: cartItemsFromStorage,
         shippingAddress: shippingAddressFromStorage,
     },
+    userLogin: { userInfo: userInfoFromStorage },
 }
 
 const middleware = [thunk]

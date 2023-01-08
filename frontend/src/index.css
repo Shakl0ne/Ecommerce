@@ -16,6 +16,7 @@ h3{
     padding:1rem 0;
 }
 
+
 .rating span{
   margin:0.1rem;
 }
@@ -51,4 +52,8 @@ h3{
   .carousel-caption h2 {
     font-size: 2.5vw;
   }
+}
+
+.spacing-10 {
+  margin-top: 10px;
 }
