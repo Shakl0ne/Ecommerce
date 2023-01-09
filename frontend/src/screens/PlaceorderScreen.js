@@ -151,6 +151,7 @@ function PlaceOrderScreen() {
                                     disabled={cart.cartItems === 0}
                                     onClick={placeOrder}
                                 >
+                                    {/*this button automatically mark as paid*/}
                                     Place Order
                                 </Button>
                             </ListGroup.Item>
