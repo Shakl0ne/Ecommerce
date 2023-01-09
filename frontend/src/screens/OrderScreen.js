@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import {Link, useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { PayPalButton } from 'react-paypal-button-v2'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
@@ -13,7 +12,7 @@ function OrderScreen() {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
-    const [sdkReady, setSdkReady] = useState(false)
+    // const [sdkReady, setSdkReady] = useState(false)
 
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails
@@ -33,16 +32,6 @@ function OrderScreen() {
     }
 
 
-    const addPayPalScript = () => {
-        const script = document.createElement('script')
-        script.type = 'text/javascript'
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AeDXja18CkwFUkL-HQPySbzZsiTrN52cG13mf9Yz7KiV2vNnGfTDP0wDEN9sGlhZHrbb_USawcJzVDgn'
-        script.async = true
-        script.onload = () => {
-            setSdkReady(true)
-        }
-        document.body.appendChild(script)
-    }
 
     useEffect(() => {
 
@@ -55,18 +44,14 @@ function OrderScreen() {
             dispatch({ type: ORDER_DELIVER_RESET })
 
             dispatch(getOrderDetails(orderId))
-        } else if (!order.isPaid) {
-            if (!window.paypal) {
-                addPayPalScript()
-            } else {
-                setSdkReady(true)
-            }
         }
+
     }, [dispatch, order, orderId, successPay, successDeliver])
 
 
-    const successPaymentHandler = (paymentResult) => {
-        dispatch(payOrder(orderId, paymentResult))
+
+    const successPaymentHandler = () => {
+        dispatch(payOrder(orderId, successPay))     // payment is always on success for a payment demo
     }
 
     const deliverHandler = () => {
@@ -188,14 +173,18 @@ function OrderScreen() {
                                         <ListGroup.Item>
                                             {loadingPay && <Loader />}
 
-                                            {!sdkReady ? (
+{/*                                            paypal developer kit not available*/}
+{/*                                            {!sdkReady ? (
                                                 <Loader />
                                             ) : (
                                                     <PayPalButton
                                                         amount={order.totalPrice}
                                                         onSuccess={successPaymentHandler}
                                                     />
-                                                )}
+                                                )}*/}
+                                            <Button type='submit'
+                                                    className='btn-block spacing-0'
+                                                    onClick={successPaymentHandler}>Credit Card</Button>
                                         </ListGroup.Item>
                                     )}
                                 </ListGroup>
